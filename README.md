@@ -47,7 +47,7 @@ EYOUTH-30908151101018-EventPulse/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-username>/EYOUTH-30908151101018-EventPulse.git
+git clone https://github.com/Zyad158/EYOUTH-30908151101018-EventPulse.git
 cd EYOUTH-30908151101018-EventPulse
 
 # 2. Install dependencies
