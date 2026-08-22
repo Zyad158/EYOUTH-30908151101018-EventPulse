@@ -39,6 +39,17 @@ app.use(mongoSanitize());
  *     responses:
  *       200: { description: Server and database status }
  */
+
+app.get("/", (req, res) => {
+    res.json({
+        status: "success",
+        message: "Welcome to EventPulse API",
+        health: "/health",
+        documentation: "/api-docs",
+        events: "/api/events"
+    });
+});
+
 app.get('/health', (req, res) => {
   const dbState = mongoose.connection.readyState; // 1 = connected
   res.status(200).json({
