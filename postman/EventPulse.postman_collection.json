@@ -1,0 +1,254 @@
+{
+  "info": {
+    "name": "EventPulse API",
+    "description": "Postman collection for the EventPulse Event Management Backend API. Uses the 'EventPulse Dev' environment (baseUrl, token).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sara Ahmed\",\n  \"email\": \"sara@email.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"status\": \"success\",\n  \"token\": \"eyJhbGciOi...\",\n  \"data\": { \"id\": \"665f1a...\", \"name\": \"Sara Ahmed\", \"email\": \"sara@email.com\", \"role\": \"attendee\" }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@eventpulse.com\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"token\": \"eyJhbGciOi...\",\n  \"data\": { \"id\": \"665f1a...\", \"name\": \"Admin User\", \"email\": \"admin@eventpulse.com\", \"role\": \"admin\" }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "List Events (filter/paginate/sort/search)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/events?page=1&limit=10&sortBy=date&order=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sortBy", "value": "date" },
+                { "key": "order", "value": "asc" },
+                { "key": "category", "value": "{{categoryId}}", "disabled": true },
+                { "key": "city", "value": "Cairo", "disabled": true },
+                { "key": "startDate", "value": "2026-01-01", "disabled": true },
+                { "key": "endDate", "value": "2026-12-31", "disabled": true },
+                { "key": "search", "value": "workshop", "disabled": true }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"total\": 4,\n  \"page\": 1,\n  \"limit\": 10,\n  \"totalPages\": 1,\n  \"data\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Event By Id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/events/{{eventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events", "{{eventId}}"]
+            }
+          },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\n  \"status\": \"success\",\n  \"data\": {}\n}" }]
+        },
+        {
+          "name": "Create Event (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Frontend Workshop\",\n  \"description\": \"Hands-on workshop covering modern frontend development.\",\n  \"category\": \"{{categoryId}}\",\n  \"date\": \"2026-09-20T10:00:00.000Z\",\n  \"city\": \"Alexandria\",\n  \"venue\": \"Tech Hub Alexandria\",\n  \"capacity\": 50\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/events", "host": ["{{baseUrl}}"], "path": ["api", "events"] }
+          },
+          "response": [{ "name": "201 Created", "status": "Created", "code": 201, "body": "{\n  \"status\": \"success\",\n  \"data\": {}\n}" }]
+        },
+        {
+          "name": "Update Event (admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"capacity\": 80\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/api/events/{{eventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events", "{{eventId}}"]
+            }
+          },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\n  \"status\": \"success\",\n  \"data\": {}\n}" }]
+        },
+        {
+          "name": "Delete Event (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/events/{{eventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events", "{{eventId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Event deleted successfully\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Registrations",
+      "item": [
+        {
+          "name": "Register for Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"event\": \"{{eventId}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/registrations", "host": ["{{baseUrl}}"], "path": ["api", "registrations"] }
+          },
+          "response": [{ "name": "201 Created", "status": "Created", "code": 201, "body": "{\n  \"status\": \"success\",\n  \"data\": {}\n}" }]
+        },
+        {
+          "name": "My Registrations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/registrations/my", "host": ["{{baseUrl}}"], "path": ["api", "registrations", "my"] }
+          },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\n  \"status\": \"success\",\n  \"total\": 1,\n  \"data\": []\n}" }]
+        },
+        {
+          "name": "Cancel Registration",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/registrations/{{registrationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "registrations", "{{registrationId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Registration cancelled successfully\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Announcements",
+      "item": [
+        {
+          "name": "Broadcast Announcement (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"{{eventId}}\",\n  \"text\": \"Doors open at 6:30 PM!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/announcements", "host": ["{{baseUrl}}"], "path": ["api", "announcements"] }
+          },
+          "response": [{ "name": "201 Created", "status": "Created", "code": 201, "body": "{\n  \"status\": \"success\",\n  \"data\": {}\n}" }]
+        },
+        {
+          "name": "Announcement History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/announcements/{{eventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "announcements", "{{eventId}}"]
+            }
+          },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\n  \"status\": \"success\",\n  \"total\": 1,\n  \"data\": []\n}" }]
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"ok\",\n  \"environment\": \"development\",\n  \"uptime\": 12.3,\n  \"database\": \"connected\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
