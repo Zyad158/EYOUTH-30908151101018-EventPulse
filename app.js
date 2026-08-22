@@ -9,6 +9,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/auth.routes');
 const eventRoutes = require('./routes/event.routes');
+const registrationRoutes = require('./routes/registration.routes');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(mongoSanitize());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/registrations', registrationRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ status: 'fail', message: 'Route not found' });
