@@ -6,9 +6,9 @@ Attendees can browse and search events, register for them (with capacity limits 
 
 ## Live Deployment
 
-- **API base URL:** `https://<your-deployment-name>.vercel.app`
-- **Health check:** `https://<your-deployment-name>.vercel.app/health`
-- **Interactive API docs (Swagger):** `https://<your-deployment-name>.vercel.app/api-docs`
+- **API base URL:** `https://eyouth-30908151101018-event-pulse.vercel.app`
+- **Health check:** `https://eyouth-30908151101018-event-pulse.vercel.app/health`
+- **Interactive API docs (Swagger):** `https://eyouth-30908151101018-event-pulse.vercel.app/api-docs`
 
 > Replace the placeholder above with your actual Vercel URL after deployment.
 
